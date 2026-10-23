@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block titulo %}Panel del estudiante - Control QR{% endblock %}
+{% block contenido %}
+<div class="panel-estudiante">
+    <p class="subtitulo" style="padding:0;margin-top:0">¿Qué quieres hacer?</p>
+    <div class="grid-estudiante">
+        <a class="tarjeta-perfil" href="{{ url_for('registro') }}">
+            <span class="etiqueta">Primera vez</span>
+            <h2>Registrarme</h2>
+            <p>Registra tu equipo y genera tu QR.</p>
+        </a>
+        <a class="tarjeta-perfil" href="{{ url_for('mi_qr') }}">
+            <span class="etiqueta">Ya registrado</span>
+            <h2>Ya tengo mi QR</h2>
+            <p>Consulta el código QR que ya generaste.</p>
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block titulo %}Control QR{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='tema.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    {% block topbar %}
+    {% if rol_actual %}
+    <div class="topbar">
+        <h1>CONTROL QR</h1>
+        <div class="acciones">
+            {% if request.endpoint not in ('panel_guardia', 'panel_estudiante') %}
+            <a href="{{ panel_url }}">Menú principal</a>
+            {% endif %}
+            <a href="{{ url_for('logout') }}">Cerrar sesión</a>
+        </div>
+    </div>
+    {% endif %}
+    {% endblock %}
+    {% block contenido %}{% endblock %}
+    {% block scripts %}{% endblock %}
+</body>
+</html>

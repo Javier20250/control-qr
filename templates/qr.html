@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block titulo %}Código QR - Control QR{% endblock %}
+{% block contenido %}
+<div class="pagina">
+    <div class="caja centrado">
+        <h1>{% if rol_actual == 'guardia' %}Código QR{% else %}Tu código está listo{% endif %}</h1>
+        <p class="ayuda">{{ usuario['nombre'] }} — {{ usuario['marca_equipo'] }} {{ usuario['color_equipo'] }}</p>
+        <img class="qr" src="{{ url_for('imagen_qr', qr_uuid=usuario['qr_uuid']) }}" alt="Código QR">
+        {% if rol_actual == 'estudiante' %}
+        <p class="nota">Guarda una captura de este código. Lo necesitas cada vez que entres o salgas; no hace falta volver a registrarte.</p>
+        {% endif %}
+        <a class="boton-secundario" href="{{ panel_url }}">Volver al menú principal</a>
+    </div>
+</div>
+{% endblock %}

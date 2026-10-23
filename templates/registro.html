@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block titulo %}Registro - Control QR{% endblock %}
+{% block contenido %}
+<div class="pagina">
+    <div class="caja">
+        <h1>Registro</h1>
+        <p class="ayuda">Registra tu equipo y genera tu QR.</p>
+        {% if error %}<div class="error">{{ error }}</div>{% endif %}
+        <form method="POST" action="{{ url_for('registro') }}">
+            {% if crea_cuenta %}
+            <div class="fila-doble">
+                <div class="campo"><label>Usuario</label><input name="usuario" required value="{{ request.form.get('usuario', '') }}"></div>
+                <div class="campo"><label>Contraseña (mín. 6)</label><input type="password" name="clave" required></div>
+            </div>
+            {% endif %}
+            <div class="campo"><label>Cédula</label><input name="cedula" required pattern="[0-9]{5,15}" inputmode="numeric" maxlength="15" oninput="this.value=this.value.replace(/\D/g,'')" title="Solo números" value="{{ request.form.get('cedula', '') }}"></div>
+            <div class="campo"><label>Nombre completo</label><input name="nombre" required value="{{ request.form.get('nombre', '') }}"></div>
+            <div class="campo"><label>Correo</label><input type="email" name="correo" required value="{{ request.form.get('correo', '') }}"></div>
+            <div class="campo"><label>Teléfono</label><input type="tel" name="telefono" pattern="[0-9]{7,15}" inputmode="numeric" maxlength="15" oninput="this.value=this.value.replace(/\D/g,'')" title="Solo números" value="{{ request.form.get('telefono', '') }}"></div>
+            <div class="fila-doble">
+                <div class="campo"><label>Marca del equipo</label><input name="marca" required value="{{ request.form.get('marca', '') }}"></div>
+                <div class="campo"><label>Color</label><input name="color" required value="{{ request.form.get('color', '') }}"></div>
+            </div>
+            <button class="boton-primario" type="submit">Generar QR</button>
+        </form>
+        {% if rol_actual %}
+        <a class="boton-secundario" href="{{ panel_url }}">Volver al menú principal</a>
+        {% else %}
+        <a class="boton-secundario" href="{{ url_for('login', rol='estudiante') }}">Ya tengo cuenta</a>
+        <a class="boton-secundario" href="{{ url_for('inicio') }}">Volver al menú principal</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

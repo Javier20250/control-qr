@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block titulo %}Ya tengo mi QR - Control QR{% endblock %}
+{% block contenido %}
+<div class="pagina">
+    <div class="caja">
+        <h1>Ya tengo mi QR</h1>
+        <p class="ayuda">Escribe tu cédula y consulta tu código.</p>
+        {% if error %}<div class="error">{{ error }}</div>{% endif %}
+        <form method="POST" action="{{ url_for('mi_qr') }}">
+            <div class="campo"><label>Cédula</label><input name="cedula" value="{{ cedula }}" required autofocus inputmode="numeric" maxlength="15" oninput="this.value=this.value.replace(/\D/g,'')" title="Solo números"></div>
+            <button class="boton-primario" type="submit">Consultar</button>
+        </form>
+
+        {% if usuario %}
+        <div class="centrado" style="margin-top:28px">
+            <p class="ayuda" style="margin-bottom:0">{{ usuario['nombre'] }} — {{ usuario['marca_equipo'] }} {{ usuario['color_equipo'] }}</p>
+            <img class="qr" src="{{ url_for('imagen_qr', qr_uuid=usuario['qr_uuid']) }}" alt="Código QR">
+            <p class="nota">Guarda una captura de este código. Lo necesitas cada vez que entres o salgas.</p>
+        </div>
+        {% endif %}
+
+        <a class="boton-secundario" href="{{ panel_url }}">Volver al menú principal</a>
+    </div>
+</div>
+{% endblock %}

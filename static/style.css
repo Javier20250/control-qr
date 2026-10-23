@@ -1,0 +1,455 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
+
+/* ==========================================================================
+   Sistema de control de accesos QR · Identidad CUN
+   Ajusta los verdes/azules aquí si tu manual de marca usa otros valores.
+   ========================================================================== */
+:root {
+    /* Color */
+    --verde: #00b14f;
+    --verde-oscuro: #007a39;
+    --verde-suave: rgba(0, 177, 79, 0.12);   /* círculo translúcido de iconos */
+    --verde-anillo: rgba(0, 177, 79, 0.28);
+    --navy: #08142b;
+    --navy-suave: #1b2a47;
+    --texto: #111827;
+    --texto-sec: #4b5563;
+    --fondo: #eef2f6;
+    --superficie: #ffffff;   /* tarjetas: blanco puro */
+    --borde: #e2e8f0;
+    --ambar: #e29a0b;
+    --rojo: #d4332c;
+
+    /* Espacios */
+    --sp-1: 4px;
+    --sp-2: 8px;
+    --sp-3: 12px;
+    --sp-4: 16px;
+    --sp-5: 24px;
+    --sp-6: 32px;
+    --sp-7: 48px;
+
+    /* Radios */
+    --radio-card: 24px;
+    --radio-md: 12px;
+    --radio-sm: 8px;
+
+    /* Sombras */
+    --sombra-card: 0 20px 40px rgba(0, 0, 0, 0.08);
+    --sombra-card-hover: 0 32px 64px rgba(0, 0, 0, 0.14);
+    --sombra-opcion:
+        0 1px 2px rgba(8, 20, 43, 0.10),
+        0 10px 24px -6px rgba(8, 20, 43, 0.18),
+        0 24px 48px -16px rgba(8, 20, 43, 0.16);
+    --sombra-opcion-hover:
+        0 2px 4px rgba(8, 20, 43, 0.10),
+        0 18px 36px -8px rgba(8, 20, 43, 0.26),
+        0 36px 64px -18px rgba(8, 20, 43, 0.24);
+    --sombra-toast: 0 10px 24px rgba(8, 20, 43, 0.10);
+
+    --fuente: "Outfit", "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+
+    /* Encabezado de inicio: se usa para anclar las tarjetas al borde de la franja */
+    --h1-inicio: clamp(40px, 5.5vw, 64px);
+    --alto-encabezado: calc(var(--h1-inicio) * 1.05 + var(--sp-3) + 26px + 56px);
+    --solape: 110px;   /* cuánto de la tarjeta queda sobre el azul */
+}
+
+* { box-sizing: border-box; }
+
+/* ---------- Página + franja hero (35% superior) ---------- */
+body {
+    --pad-sup: max(32px, calc(35vh - var(--alto-encabezado) - var(--solape)));
+
+    position: relative;
+    font-family: var(--fuente);
+    color: var(--texto);
+    background-color: var(--fondo);
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: var(--pad-sup) clamp(16px, 4vw, 48px) clamp(40px, 8vh, 96px);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Franja azul: 35% de la pantalla, con brillo verde sutil y borde inferior curvo */
+body::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: max(35vh, calc(var(--pad-sup) + var(--alto-encabezado) + 80px));
+    background:
+        radial-gradient(900px 420px at 88% -20%, rgba(0, 177, 79, 0.30), transparent 65%),
+        radial-gradient(700px 360px at 0% 110%, rgba(255, 255, 255, 0.07), transparent 65%),
+        linear-gradient(180deg, #0b1a38 0%, var(--navy) 100%);
+    border-radius: 0 0 56px 16px;
+}
+
+/* ---------- Tarjeta base (vistas con formulario) ---------- */
+.card {
+    background: var(--superficie);
+    border: 1px solid rgba(15, 23, 42, 0.05);
+    border-radius: var(--radio-card);
+    box-shadow: var(--sombra-card);
+    padding: var(--sp-7) 40px 40px;
+    width: 100%;
+    max-width: 460px;
+}
+
+h1 {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin: 0 0 var(--sp-4);
+    text-align: left;
+    color: var(--navy);
+}
+
+/* Acento corto bajo el título de la tarjeta */
+.card > h1::after {
+    content: "";
+    display: block;
+    width: 48px;
+    height: 4px;
+    margin-top: var(--sp-3);
+    background: var(--verde);
+    border-radius: 4px;
+}
+
+/* ---------- Formularios ---------- */
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy-suave);
+    margin-top: var(--sp-4);
+}
+
+input {
+    width: 100%;
+    padding: 12px 14px;
+    margin-top: var(--sp-1);
+    border: 1.5px solid var(--borde);
+    border-bottom-width: 3px;
+    border-radius: 10px 10px 0 0;
+    background: var(--fondo);
+    color: var(--navy);
+    font-family: inherit;
+    font-size: 15px;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+input::placeholder { color: #94a3b8; }
+
+input:hover { border-color: #cbd5e1; }
+
+/* Foco intencional: el subrayado grueso pasa a verde, sin aro azul */
+input:focus {
+    outline: none;
+    background: var(--superficie);
+    border-color: var(--navy);
+    border-bottom-color: var(--verde);
+}
+
+.fila-doble {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--sp-3);
+}
+
+.fila-doble > div {
+    flex: 1 1 140px;
+    min-width: 0;
+}
+
+/* ---------- Botones ---------- */
+button, .boton {
+    width: 100%;
+    padding: 14px var(--sp-4);
+    margin-top: var(--sp-5);
+    border: 2px solid var(--navy);
+    border-radius: var(--radio-md);
+    background: var(--verde);
+    color: var(--navy);
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.1s ease;
+}
+
+button:hover, .boton:hover {
+    background: var(--navy);
+    color: var(--verde);
+}
+
+button:active, .boton:active { transform: translateY(1px); }
+
+button:focus-visible, .boton:focus-visible,
+.opcion:focus-visible {
+    outline: 3px solid var(--verde);
+    outline-offset: 3px;
+}
+
+.boton-secundario {
+    background: transparent;
+    color: var(--navy);
+    border-color: var(--borde);
+}
+
+.boton-secundario:hover {
+    background: var(--verde-suave);
+    color: var(--navy);
+    border-color: var(--navy);
+}
+
+/* ---------- Contenedores de botones (nunca se montan) ---------- */
+.acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+    margin-top: var(--sp-5);
+}
+
+.acciones > button,
+.acciones > .boton {
+    flex: 1 1 180px;
+    width: auto;
+    margin-top: 0;
+}
+
+/* ---------- Vistas tipo panel (opcionales) ---------- */
+.card-ancha { max-width: 1100px; }
+
+.layout-panel {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sp-5);
+    align-items: start;
+}
+
+@media (max-width: 900px) {
+    .layout-panel { grid-template-columns: 1fr; }
+}
+
+/* ---------- Mensajes tipo toast ---------- */
+.error,
+.resultado {
+    background: var(--superficie);
+    color: var(--texto);
+    border: 1px solid var(--borde);
+    border-left: 6px solid var(--rojo);
+    border-radius: var(--radio-md);
+    box-shadow: var(--sombra-toast);
+    padding: var(--sp-3) var(--sp-4);
+    font-size: 14px;
+}
+
+.error {
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: var(--sp-3);
+}
+
+.resultado {
+    margin-top: var(--sp-4);
+    padding: var(--sp-4);
+    font-weight: 500;
+}
+
+.resultado.entrada { border-left-color: var(--verde); }
+.resultado.salida  { border-left-color: var(--ambar); }
+.resultado.error   { border-left-color: var(--rojo); }
+
+.centrado { text-align: center; }
+
+/* ---------- QR ---------- */
+img.qr {
+    width: 220px;
+    height: 220px;
+    margin: var(--sp-4) auto;
+    display: block;
+    padding: var(--sp-2);
+    background: #fff;
+    border: 2px solid var(--navy);
+    border-radius: 16px;
+}
+
+#lector-qr {
+    width: 100%;
+    border: 2px solid var(--navy);
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--navy);
+}
+
+/* ---------- Pantalla de inicio (hero + tarjetas flotantes) ---------- */
+.contenedor-inicio {
+    width: 100%;
+    max-width: 1200px;
+}
+
+.encabezado-inicio {
+    text-align: center;
+    margin: 0 0 56px;
+}
+
+.encabezado-inicio h1 {
+    font-size: var(--h1-inicio);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+    text-align: center;
+    color: #ffffff;
+    margin: 0 0 var(--sp-3);
+}
+
+.encabezado-inicio p {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.5;
+    margin: 0 auto;
+    max-width: 560px;
+}
+
+.grid-opciones {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+    align-items: stretch;
+}
+
+.opcion {
+    --acento: var(--verde);
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: var(--radio-card);
+    box-shadow: var(--sombra-opcion);
+    padding: 44px 36px;
+    min-height: clamp(280px, 36vh, 400px);
+    min-width: 0;
+    text-decoration: none;
+    color: var(--texto);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--sp-2);
+    transition: transform 0.35s cubic-bezier(.2, .7, .2, 1),
+                box-shadow 0.35s ease,
+                border-color 0.25s ease;
+}
+
+.opcion:hover {
+    transform: translateY(-6px);
+    border-color: var(--verde);
+    box-shadow: var(--sombra-opcion-hover);
+}
+
+/* Etiqueta de perfil: texto simple con línea de acento, sin iconos */
+.opcion-etiqueta {
+    align-self: flex-start;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--verde-oscuro);
+    padding-bottom: var(--sp-3);
+    margin-bottom: var(--sp-5);
+    border-bottom: 2px solid var(--verde);
+}
+
+.opcion-enlace {
+    margin-top: auto;
+    padding-top: var(--sp-4);
+    font-weight: 600;
+    color: var(--verde-oscuro);
+}
+
+.opcion:hover .opcion-enlace { text-decoration: underline; }
+
+.opcion-titulo {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    line-height: 1.25;
+    color: #111827;
+}
+
+.opcion-desc {
+    font-size: 15px;
+    line-height: 1.55;
+    color: #4b5563;
+}
+
+/* Variantes (mismos nombres de clase): una sola paleta institucional */
+.opcion-guardia,
+.opcion-visitante,
+.opcion-registro { --acento: var(--verde); }
+
+/* Tablet: 2 columnas, la tercera opción ocupa todo el ancho */
+@media (min-width: 721px) and (max-width: 1023px) {
+    .grid-opciones { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .opcion-registro { grid-column: 1 / -1; min-height: 0; }
+}
+
+/* Móvil: una columna al 100% */
+@media (max-width: 720px) {
+    .grid-opciones { grid-template-columns: 1fr; gap: var(--sp-5); }
+    .opcion { min-height: 0; padding: 32px 28px; }
+    .encabezado-inicio { margin-bottom: var(--sp-6); }
+    .card { padding: var(--sp-6) var(--sp-5) var(--sp-5); }
+    body::before { border-radius: 0 0 36px 12px; }
+}
+
+/* ---------- Tablas ---------- */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 13px;
+    margin-top: var(--sp-4);
+    border: 1px solid var(--borde);
+    border-radius: 16px;
+    overflow: hidden;
+    font-variant-numeric: tabular-nums;
+}
+
+th, td {
+    text-align: left;
+    padding: 12px var(--sp-4);
+    border-bottom: 1px solid var(--borde);
+}
+
+th {
+    background: var(--navy);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.03em;
+    border-bottom: 3px solid var(--verde);
+    white-space: nowrap;
+}
+
+tbody tr:nth-child(even) td { background: #f4f8fb; }
+tbody tr:hover td { background: var(--verde-suave); }
+tbody tr:last-child td { border-bottom: none; }
+
+/* ---------- Accesibilidad ---------- */
+@media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+    .opcion:hover { transform: none; }
+}

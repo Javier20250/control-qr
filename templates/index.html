@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block topbar %}{% endblock %}
+{% block contenido %}
+<div class="portada">
+    <div class="marca">
+        <h1>Control QR</h1>
+        <p>Registro y control de acceso de visitantes y equipos</p>
+    </div>
+    <div class="grid-perfiles">
+        <a class="tarjeta-perfil" href="{{ url_for('login', rol='guardia') }}">
+            <span class="etiqueta">Guardia / Colaborador</span>
+            <h2>Panel de acceso</h2>
+            <p>Escanea QR y consulta la bitácora de entradas y salidas.</p>
+        </a>
+        <a class="tarjeta-perfil" href="{{ url_for('login', rol='estudiante') }}">
+            <span class="etiqueta">Estudiante</span>
+            <h2>Mi equipo y mi QR</h2>
+            <p>Regístrate por primera vez o consulta tu código QR.</p>
+        </a>
+    </div>
+</div>
+{% endblock %}

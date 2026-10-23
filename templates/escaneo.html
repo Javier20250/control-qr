@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block titulo %}Escanear QR - Control QR{% endblock %}
+{% block head %}<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>{% endblock %}
+{% block contenido %}
+<div class="pagina">
+    <div class="caja">
+        <h1>Escanear QR</h1>
+        <p class="ayuda">Apunta la cámara al código del visitante.</p>
+        <div id="lector-qr"></div>
+        <div id="resultado"></div>
+        <a class="boton-secundario" href="{{ url_for('bitacora') }}">Ver bitácora</a>
+        <a class="boton-secundario" href="{{ url_for('panel_guardia') }}">Volver al menú principal</a>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+    const resultadoDiv = document.getElementById("resultado");
+    let procesando = false;
+
+    function mostrarResultado(html, clase) {
+        resultadoDiv.innerHTML = `<div class="resultado ${clase}">${html}</div>`;
+    }
+
+    async function onScanSuccess(decodedText) {
+        if (procesando) return;   // evita mandar el mismo QR varias veces seguidas
+        procesando = true;
+
+        try {
+            const resp = await fetch("/api/escanear", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ uuid: decodedText })
+            });
+            const data = await resp.json();
+
+            if (data.ok) {
+                const etiqueta = data.tipo === "entrada" ? "Entrada registrada" : "Salida registrada";
+                mostrarResultado(
+                    `<strong>${data.equipo}</strong> — ${etiqueta}<br>${data.nombre} · ${data.hora}`,
+                    data.tipo
+                );
+            } else {
+                mostrarResultado(data.mensaje, "error");
+            }
+        } catch (err) {
+            mostrarResultado("No se pudo conectar con el servidor.", "error");
+        }
+
+        // deja pasar 3 segundos antes de aceptar otro escaneo
+        setTimeout(() => { procesando = false; }, 3000);
+    }
+
+    const escaner = new Html5Qrcode("lector-qr");
+    escaner.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: 250 },
+        onScanSuccess
+    ).catch((err) => {
+        mostrarResultado("No se pudo acceder a la cámara: " + err, "error");
+    });
+</script>
+{% endblock %}

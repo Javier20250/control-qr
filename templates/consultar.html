@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block titulo %}Consultar QR - Control QR{% endblock %}
+{% block contenido %}
+<div class="pagina">
+    <div class="caja">
+        <h1>Consultar QR</h1>
+        <p class="ayuda">Ingresa la cédula para ver el código de la persona.</p>
+        {% if error %}<div class="error">{{ error }}</div>{% endif %}
+        <form method="POST" action="{{ url_for('consultar_qr') }}">
+            <div class="campo"><label>Cédula</label><input name="cedula" required autofocus inputmode="numeric" maxlength="15" oninput="this.value=this.value.replace(/\D/g,'')" title="Solo números"></div>
+            <button class="boton-primario" type="submit">Buscar</button>
+        </form>
+        <a class="boton-secundario" href="{{ url_for('panel_guardia') }}">Volver al menú principal</a>
+    </div>
+</div>
+{% endblock %}

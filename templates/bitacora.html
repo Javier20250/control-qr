@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block titulo %}Bitácora - Control QR{% endblock %}
+{% block contenido %}
+<div class="pagina ancha">
+    <div class="caja">
+        <h1>Bitácora de movimientos</h1>
+        {% if movimientos %}
+        <div class="tabla-scroll">
+        <table class="tabla-historial">
+            <thead><tr><th>Nombre</th><th>Equipo</th><th>Movimiento</th><th>Fecha y hora</th></tr></thead>
+            <tbody>
+            {% for m in movimientos %}
+            <tr>
+                <td>{{ m['nombre'] }}</td>
+                <td>{{ m['marca_equipo'] }} {{ m['color_equipo'] }}</td>
+                <td class="tag-{{ m['tipo'] }}">{{ m['tipo']|capitalize }}</td>
+                <td>{{ m['fecha_hora'][8:10] }}/{{ m['fecha_hora'][5:7] }}/{{ m['fecha_hora'][0:4] }} {{ m['fecha_hora'][11:19] }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
+        {% else %}
+        <p class="vacio">Aún no hay movimientos registrados.</p>
+        {% endif %}
+        <a class="boton-secundario" href="{{ url_for('panel_guardia') }}">Volver al menú principal</a>
+    </div>
+</div>
+{% endblock %}

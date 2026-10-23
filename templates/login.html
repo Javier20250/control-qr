@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block titulo %}Iniciar sesión - Control QR{% endblock %}
+{% block topbar %}{% endblock %}
+{% block contenido %}
+<div class="login-wrap">
+    <div class="login-card">
+        <span class="etiqueta">{{ etiqueta }}</span>
+        <h2>Iniciar sesión</h2>
+        {% if error %}<div class="error">{{ error }}</div>{% endif %}
+        <form method="POST" action="{{ url_for('login', rol=rol) }}">
+            <div class="campo"><label>Usuario</label><input name="usuario" placeholder="Tu usuario" required autofocus></div>
+            <div class="campo"><label>Contraseña</label><input type="password" name="clave" placeholder="••••••••" required></div>
+            <button class="boton-primario" type="submit">Ingresar</button>
+        </form>
+        {% if rol == 'estudiante' %}
+        <a class="enlace-secundario" href="{{ url_for('registro') }}">¿Primera vez? Crear mi cuenta</a>
+        {% endif %}
+        <a class="boton-secundario" href="{{ url_for('inicio') }}">Volver al menú principal</a>
+    </div>
+</div>
+{% endblock %}
